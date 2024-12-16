@@ -44,7 +44,7 @@ class CartController extends Controller
             $cartItems=$cart->items;
             foreach ($cartItems as $cartItem)
             {   $product=$cartItem->product;
-                $product->quantity=$product->old_quantity;
+                $product->quantity += $cartItem->quantity;
                 $product->save();
             }
 
@@ -102,10 +102,10 @@ class CartController extends Controller
          
         
          $cartItem = $cart->items()->firstOrCreate(
-             ['product_id' => $request->product_id,
-             'quantity_up' => 0,
-             'quantity_down'=> 0,
-             'quantity'=> 0]
+             ['product_id' => $request->product_id],
+             ['quantity_up' => 0],
+             ['quantity_down'=> 0],
+             ['quantity'=> 0]
          );
          $cartItem->increment('quantity', $request->quantity_up ?? 1);
          
@@ -119,10 +119,10 @@ class CartController extends Controller
          $cart = Cart::firstOrCreate(['user_id' => $user->id]);
  
          $cartItem = $cart->items()->firstOrCreate(
-             ['product_id' => $request->product_id,
-             'quantity_up' => 0,
-             'quantity_down'=> 0,
-             'quantity'=> 0]
+             ['product_id' => $request->product_id],
+             ['quantity_up' => 0],
+             ['quantity_down'=> 0],
+             ['quantity'=> 0]
          );
          
          $cartItem->decrement('quantity', $request->quantity_down ?? 1);

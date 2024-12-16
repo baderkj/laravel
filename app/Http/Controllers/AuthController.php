@@ -38,7 +38,7 @@ class AuthController extends Controller
     {
         try{
             $checkReq=$request->validate([
-                'mobile_number' => 'requiredstring|',
+                'mobile_number' => 'required|string|',
                 'password' => 'required|string',
             ]);
             $user = User::where('mobile_number',$checkReq['mobile_number'])->first();
