@@ -33,6 +33,7 @@ Route::get('/products/{id}', [ProductsController::class, 'show']);
 Route::get('/products/search/{name}', [ProductsController::class, 'search']);
 
 
+
 Route::group(['middleware'=>['auth:sanctum']],function ()  {
     Route::get('cart', [CartController::class, 'getCart']);
     Route::post('cart/decrease', [CartController::class, 'decreaseItems']);
@@ -50,7 +51,8 @@ Route::group(['middleware'=>['auth:sanctum']],function ()  {
     Route::get('/orders/accepted', [OrderController::class, 'getAcceptedOrders']);
     Route::get('/orders/pinding', [OrderController::class, 'getPindingOrders']);
 
-    
+
+
     Route::post('/logout', [AuthController::class, 'logout']);
 
     //
@@ -73,4 +75,6 @@ Route::group(['middleware'=>['auth:driver']],function (){
     Route::get('/orders/driver/current', [OrderController::class, 'currentOrders']);
     Route::post('/orders/status/{order}', [OrderController::class, 'changeStatus']);
     Route::post('/driver/logout', [AuthDriverController::class, 'logout']);
+    
+
 });
