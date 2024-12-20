@@ -81,7 +81,7 @@ class CartController extends Controller
             $cartItem->product->save();
         }
         $order = Order::
-        firstOrCreate([
+        Create([
             'user_id' => $user->id,
             'cart_id' => $cart->id,
             'delivery_address' => $user->location,
