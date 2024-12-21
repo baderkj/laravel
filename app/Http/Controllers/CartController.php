@@ -45,6 +45,7 @@ class CartController extends Controller
             foreach ($cartItems as $cartItem)
             {   $product=$cartItem->product;
                 $product->quantity += $cartItem->quantity;
+                $product->sales -= $cartItem->quantity;
                 $product->save();
             }
 
@@ -67,6 +68,7 @@ class CartController extends Controller
             if($cartItem->product->quantity >= $cartItem->quantity)
             {
                 $cartItem->product->quantity -= $cartItem->quantity;
+                $cartItem->product->sales+=$cartItem->quantity;
                 $payments +=$cartItem->product->price * $cartItem->quantity;
             }else{
                 return response()->json([

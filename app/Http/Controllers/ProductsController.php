@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 class ProductsController extends Controller
 {
     public function index()
@@ -22,5 +22,12 @@ class ProductsController extends Controller
     {
       $Product=Product::find($id);
       return response(['product'=>$Product]);
+    }
+    public function mostRelevant()
+    {
+      $topProducts = Product::orderBy('sales', 'desc')->take(5)->get();
+    return response()->json([
+      'RelevantProducts'=>$topProducts
+    ]);
     }
 }

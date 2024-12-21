@@ -25,10 +25,12 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('/stores/search/{name}', [StoresController::class, 'search']);
 Route::get('/stores', [StoresController::class, 'index']);
+Route::get('/stores/relevant',[StoresController::class,'mostRelevant']);
 Route::get('/store/products/{id}',[StoresController::class,'show']);
 
 
 Route::get('/products', [ProductsController::class, 'index']);
+Route::get('/products/relevant',[ProductsController::class,'mostRelevant']);
 Route::get('/products/{id}', [ProductsController::class, 'show']);
 Route::get('/products/search/{name}', [ProductsController::class, 'search']);
 
