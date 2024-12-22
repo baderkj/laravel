@@ -31,7 +31,7 @@ Route::get('/store/products/{id}',[StoresController::class,'show']);
 
 Route::get('/products', [ProductsController::class, 'index']);
 Route::get('/products/relevant',[ProductsController::class,'mostRelevant']);
-Route::get('/products/{id}', [ProductsController::class, 'show']);
+Route::get('/product/{id}', [ProductsController::class, 'show']);
 Route::get('/products/search/{name}', [ProductsController::class, 'search']);
 
 

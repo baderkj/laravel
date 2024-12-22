@@ -10,7 +10,8 @@ class Product extends Model
     /** @use HasFactory<\Database\Factories\ProductFactory> */
     use HasFactory;
     protected $fillable = [
-        "name","type","price","quantity"];
+        "name","type","price","quantity",
+    "image","description"];
 
        
        protected static function boot()

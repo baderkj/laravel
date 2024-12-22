@@ -29,7 +29,9 @@ class StoresController extends Controller
       $topProducts = Product::orderBy('sales', 'desc')->take(5)->get();
       
       foreach($topProducts as $product) {
-          $topStores[] = Store::find($product->store->id); 
+         $store= Store::find($product->store->id);
+         if(!in_array($store,$topStores))
+          $topStores[] = $store;
       }
       
 

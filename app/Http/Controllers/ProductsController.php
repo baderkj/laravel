@@ -25,7 +25,9 @@ class ProductsController extends Controller
     }
     public function mostRelevant()
     {
-      
+
+      ////my push dddd
+
       $topProducts = Product::orderBy('sales', 'desc')->take(5)->get();
     return response()->json([
       'RelevantProducts'=>$topProducts

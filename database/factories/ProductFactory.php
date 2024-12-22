@@ -21,6 +21,8 @@ class ProductFactory extends Factory
             'type'=>fake()->word(),
             'price'=>fake()->numberBetween(1,100),
             'quantity'=>fake()->numberBetween(1,50),
+            'image'=>'images/products/product'.fake()->numberBetween(1,11).'.jpg',
+            'description'=>fake()->text(),
             'store_id'=>Store::factory()
         ];
     }
