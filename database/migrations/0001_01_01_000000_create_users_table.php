@@ -19,8 +19,6 @@ return new class extends Migration
             $table->string('location');
             $table->string('image')->nullable();
             $table->string('mobile_number')->unique();
-            
-
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

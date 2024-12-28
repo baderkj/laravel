@@ -48,7 +48,8 @@ class CartController extends Controller
                 $product->sales -= $cartItem->quantity;
                 $product->save();
             }
-
+            $user->pocket+=$order->bill;
+            $user->save();
             return response()->json([
                 'message'=>'order cancelled ',
                 'cart'=>$cart->load('items.product')
@@ -61,7 +62,11 @@ class CartController extends Controller
    
         $user = $request->user();
         $cart = Cart::where('user_id', $user->id)->firstOrFail();
+       
         $cartItems=$cart->items;
+        if ($cartItems->isEmpty()) {
+            return response()->json(['message' => 'Cart is empty'], 400);
+        }
         $payments=null;
         foreach ($cartItems as $cartItem)
         {
@@ -78,10 +83,19 @@ class CartController extends Controller
             }
            
         }
+        if($user->pocket< $payments)
+        {   
+            return response()->json([
+           'message' => 'no enough balance your pocket is '.$user->pocket], 400);
+        }
+        $user->pocket -=$payments;
+        $user->save();
         foreach ($cartItems as $cartItem)
         {
             $cartItem->product->save();
         }
+        $cart->items()->delete();
+            
         $order = Order::
         Create([
             'user_id' => $user->id,
@@ -145,7 +159,7 @@ class CartController extends Controller
          $user = $request->user();
          $cart = Cart::where('user_id', $user->id)->firstOrFail();
          $cart->items()->delete();
-         DB::table('cart_items')->truncate();
+         
          return response()->json([$cart->load('items.product'),"all Products deleted"]);
      }
 }
