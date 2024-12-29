@@ -106,8 +106,10 @@ class CartController extends Controller
         ]);
         return response()->json([
             "order"=>$order,
+            
             "message"=>"your oder has been bought successfully",
-        "payments"=>$payments
+        "payments"=>$payments,
+        "user"=>$user,
         ]);
      }
      // Add product to cart
