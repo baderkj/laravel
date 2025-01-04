@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Order;
-
+use App\Models\OrderItem;
 class CartController extends Controller
 {
 
@@ -76,14 +76,14 @@ class CartController extends Controller
                 $cartItem->product->sales+=$cartItem->quantity;
                 $payments +=$cartItem->product->price * $cartItem->quantity;
             }else{
-                return response()->json([
+                 response()->json([
                     "message"=>"the quantity of this product id ".$cartItem->product_id
                     ." is ".$cartItem->product->quantity." and you order ".$cartItem->quantity,
                     "quantity"=>$cartItem->product->quantity]);
             }
            
         }
-        if($user->pocket< $payments)
+        if($user->pocket < $payments)
         {   
             return response()->json([
            'message' => 'no enough balance your pocket is '.$user->pocket], 400);
@@ -94,7 +94,7 @@ class CartController extends Controller
         {
             $cartItem->product->save();
         }
-        $cart->items()->delete();
+        
             
         $order = Order::
         Create([
@@ -104,6 +104,17 @@ class CartController extends Controller
             'bill'=>$payments,
             'status' => 'pending',
         ]);
+        foreach ($cart->items as $cartItem) {
+            OrderItem::create([
+                'order_id' => $order->id,
+                'product_id' => $cartItem->product_id,
+                'quantity' => $cartItem->quantity,
+                'price' => $cartItem->product->price, 
+            ]);
+        }
+
+
+        $cart->items()->delete();
         return response()->json([
             "order"=>$order,
             

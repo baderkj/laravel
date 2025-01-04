@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 class AuthController extends Controller
 {
     public function register(Request $request)
@@ -14,16 +15,24 @@ class AuthController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'nullable|string|max:255',
             'location' => 'required|string|max:255',
-            'image' => 'nullable|string|max:255',
+            'image' => 'nullable|image|max:2048',
             'mobile_number' => 'required|string|unique:users',
             'password' => 'required|string|min:8',
         ]);
 
+        $imageUrl=null;
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('images', 'public');
+            $imageUrl=Storage::url($imagePath);
+
+        }
+    
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'location' => $request->location,
-            'image' => $request->image,
+            'image' => $imageUrl,
             'mobile_number' => $request->mobile_number,
             'password' => Hash::make($request->password),
        

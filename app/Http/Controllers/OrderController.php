@@ -11,7 +11,10 @@ class OrderController extends Controller
     //Driver*******************************************
     public function index()
     {
-        return Order::where('status','pending')->paginate(10);
+        $orders=Order::where('status','pending')->paginate(10);
+        return response()->json([
+            'orders'=>$orders
+        ]);
     }
     public function currentOrders(Request $request)
     {
@@ -69,6 +72,11 @@ class OrderController extends Controller
         $user=$request->user();
         $orders=$user->orders;
         return response()->json(['orders'=>$orders]);
+    }
+    public function getOrderItems(Request $request,Order $order)
+    {
+        return response()->json(['order'=>$order->load('items.product')]);
+
     }
     public function getAcceptedOrders(Request $request)
     {
