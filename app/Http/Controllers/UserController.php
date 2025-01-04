@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash; 
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\Storage;
 class UserController extends Controller
 {
     public function index()
@@ -17,36 +17,26 @@ class UserController extends Controller
     
     public function store(Request $request)
     {
-        // $validator = Validator::make($request->all(), [
-        //     'first_name' => 'required|string|max:255',
-        //     'last_name' => 'required|string|max:255',
-        //     'location' => 'required|string|max:255',
-        //     'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
-        //     'email' => 'required|string|email|max:255|unique:users',
-        //     'password' => 'required|string|min:8', 
-        // ]);
+        $user=$request->user();
+        $request->validate([ 
+            'image' => 'nullable|image|max:2048',
+        ]);
+          
     
-       
-        // if ($validator->fails()) {
-        //     return response()->json($validator->errors(), 422);
-        // }
-    
-        // Create a new user
-        try{
-            $user = User::create([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'location' => $request->location,
-                'image' => $request->image , // Assuming you have a method to handle the image upload
-                'mobile_number' => $request->mobile_number,
-                'password' => Hash::make($request->password), // Hash the password for security
+        $imageUrl=null;
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('images', 'public');
+            $imageUrl=Storage::url($imagePath);
+
+        }
+            $user->update([ 
+                'image' => $imageUrl ,       
             ]);
         
             // Return response
             return response()->json(['user' => $user], 201);
 
-        }catch(\Exception $e){
-            return response()->json(['error' => $e->getMessage()], 201);
-        }
+       
     }
 }

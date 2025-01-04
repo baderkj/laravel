@@ -18,7 +18,7 @@ Route::get('/',function (){
     return 'hello';
 });
 Route::get('/users', [UserController::class, 'index']);
-Route::post('/users', [UserController::class, 'store']);
+
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -45,10 +45,12 @@ Route::group(['middleware'=>['auth:api']],function ()  {
     Route::post('cart/buy', [CartController::class, 'buy']);
     Route::post('cart/unbuy/{order}', [CartController::class, 'unBuy']);
 
+    Route::post('/users', [UserController::class, 'store']);
     Route::post('/users/favorite/{id}',[FavoriteProductsController::class,'favorite']);
     Route::post('/users/unfavorite/{id}',[FavoriteProductsController::class,'unfavorite']);
     Route::post('/users/favorites',[FavoriteProductsController::class,'favorites']);
-    
+   
+
     Route::get('/user/orders', [OrderController::class, 'getOrders']);
     
     Route::get('/orders/accepted', [OrderController::class, 'getAcceptedOrders']);
