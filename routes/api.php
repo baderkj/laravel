@@ -43,6 +43,7 @@ Route::group(['middleware'=>['auth:api']],function ()  {
     Route::delete('cart/remove', [CartController::class, 'removeFromCart']);
     Route::delete('cart/remove/all', [CartController::class, 'removeCart']);
     Route::post('cart/buy', [CartController::class, 'buy']);
+    Route::post('product/buy/{product}', [OrderController::class, 'quickBuy']);
     Route::post('cart/unbuy/{order}', [CartController::class, 'unBuy']);
 
     Route::post('/users', [UserController::class, 'store']);
