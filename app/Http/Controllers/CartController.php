@@ -28,12 +28,12 @@ class CartController extends Controller
             return response()->json([
                 'message'=>'order deliverd ,you can not cancelled the order'
                 ,'order'=>$order
-                ]);
+                ],400);
         }elseif($order->status== 'cancelled')
         {
             return response()->json([
                 'message'=> 'order already canelled'
-            ,'order'=>$order]);
+            ,'order'=>$order],400);
         }
         else
         {
@@ -48,10 +48,11 @@ class CartController extends Controller
                 $product->sales -= $cartItem->quantity;
                 $product->save();
             }
-            $user->pocket+=$order->bill;
+            $user->pocket+=$order->bill-((1/100)*$order->bill);
             $user->save();
             return response()->json([
-                'message'=>'order cancelled ',
+                'user'=>$user,
+                'message'=>'order cancelled ,but we will take 1% of bill',
                 'cart'=>$cart->load('items.product')
                 ,'order'=>$order]);
         }
@@ -76,10 +77,12 @@ class CartController extends Controller
                 $cartItem->product->sales+=$cartItem->quantity;
                 $payments +=$cartItem->product->price * $cartItem->quantity;
             }else{
-                 response()->json([
-                    "message"=>"the quantity of this product id ".$cartItem->product_id
-                    ." is ".$cartItem->product->quantity." and you order ".$cartItem->quantity,
-                    "quantity"=>$cartItem->product->quantity]);
+                return response()->json([
+                    "message"=>"the quantity of this product "
+                    ." named ".$cartItem->product->name
+                    ." is ".$cartItem->product->quantity.
+                    " and you order ".$cartItem->quantity,
+                    "quantity"=>$cartItem->product->quantity],400);
             }
            
         }

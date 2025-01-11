@@ -24,6 +24,6 @@ class FavoriteProductsController extends Controller
     {
         $favorites = $request->user()->favoriteProducts()->get();
 
-        return response()->json($favorites);
+        return response()->json(['products'=>$favorites],200);
     }
 }
