@@ -49,7 +49,7 @@ class OrderController extends Controller
            $product->sales+=$quantity;
            $payments =$product->price * $quantity;
        }else{
-            response()->json([
+           return response()->json([
                "message"=>"the quantity of this product id ".$product->id
                ." is ".$product->quantity." and you order ".$quantity,
                "quantity"=>$product->quantity]);
