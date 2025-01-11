@@ -8,8 +8,7 @@ use App\Models\Driver;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\OrderItem;
-use App\Models\Product;
-use App\Models\OrderItem;
+
 class OrderController extends Controller
 {
     //Driver*******************************************
