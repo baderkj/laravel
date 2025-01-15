@@ -142,7 +142,8 @@ class OrderController extends Controller
     public function getOrders(Request $request)
     {
         $user=$request->user();
-        $orders=$user->orders;
+        $orders = $user->orders->where('status', '!=', 'cancelled')->values()->toArray();
+        
         return response()->json(['orders'=>$orders]);
     }
     public function getOrderItems(Request $request,Order $order)

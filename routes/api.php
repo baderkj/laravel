@@ -44,7 +44,7 @@ Route::group(['middleware'=>['auth:api']],function ()  {
     Route::delete('cart/remove/all', [CartController::class, 'removeCart']);
     Route::post('cart/buy', [CartController::class, 'buy']);
     Route::post('product/buy/{product}', [OrderController::class, 'quickBuy']);
-    Route::post('cart/unbuy/{order}', [CartController::class, 'unBuy']);
+    Route::post('order/cancel/{order}', [CartController::class, 'unBuy']);
 
     Route::post('/users', [UserController::class, 'store']);
     Route::post('/users/favorite/{id}',[FavoriteProductsController::class,'favorite']);
